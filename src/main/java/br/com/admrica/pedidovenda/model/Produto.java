@@ -20,20 +20,40 @@ import org.hibernate.validator.constraints.NotBlank;
 import br.com.admrica.pedidovenda.validation.SKU;
 
 @Entity
-@Table(name="produto")
+@Table(name = "produto")
 public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-	private String nome;
-	private String sku;
-	private BigDecimal valorUnitario;
-	private Integer quantidadeEstoque;
-	private Categoria categoria;
-
 	@Id
 	@GeneratedValue
+	private Long id;
+
+	@NotBlank
+	@Size(max = 80)
+	@Column(nullable = false, length = 80)
+	private String nome;
+
+	@NotBlank
+	@SKU
+	@Column(nullable = false, length = 20, unique = true)
+	private String sku;
+
+	@NotNull(message = "é obrigatório")
+	@Column(name = "valor_unitario", nullable = false, precision = 10, scale = 2)
+	private BigDecimal valorUnitario;
+
+	@NotNull
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
+	@Column(name = "quantidade_estoque", nullable = false, length = 5)
+	private Integer quantidadeEstoque;
+
+	// @NotNull
+	@ManyToOne
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categoria categoria;
+
 	public Long getId() {
 		return id;
 	}
@@ -42,9 +62,6 @@ public class Produto implements Serializable {
 		this.id = id;
 	}
 
-	@NotBlank
-	@Size(max = 80)
-	@Column(nullable = false, length = 80)
 	public String getNome() {
 		return nome;
 	}
@@ -53,8 +70,6 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	@NotBlank @SKU
-	@Column(nullable = false, length = 20, unique = true)
 	public String getSku() {
 		return sku;
 	}
@@ -63,8 +78,6 @@ public class Produto implements Serializable {
 		this.sku = sku == null ? null : sku.toUpperCase();
 	}
 
-	@NotNull(message = "é obrigatório")
-	@Column(name="valor_unitario", nullable = false, precision = 10, scale = 2)
 	public BigDecimal getValorUnitario() {
 		return valorUnitario;
 	}
@@ -73,8 +86,6 @@ public class Produto implements Serializable {
 		this.valorUnitario = valorUnitario;
 	}
 
-	@NotNull @Min(0) @Max(value = 9999, message = "tem um valor muito alto")
-	@Column(name="quantidade_estoque", nullable = false, length = 5)
 	public Integer getQuantidadeEstoque() {
 		return quantidadeEstoque;
 	}
@@ -83,9 +94,6 @@ public class Produto implements Serializable {
 		this.quantidadeEstoque = quantidadeEstoque;
 	}
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "categoria_id", nullable = false)
 	public Categoria getCategoria() {
 		return categoria;
 	}
