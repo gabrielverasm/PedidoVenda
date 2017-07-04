@@ -66,6 +66,15 @@
 			<version>2.2.14</version>
 		</dependency>
 
+		<!-- OmniFaces -->
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>1.5</version>
+			<scope>compile</scope>
+		</dependency>
+
+
 		<!-- Log4J -->
 		<dependency>
 			<groupId>log4j</groupId>
